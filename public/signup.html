@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEV@Deakin - Sign Up</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="signup-banner">
+        <form id="signup-form">
+            <label for="email" class="signup-text">SIGN UP FOR OUR DAILY INSIDER</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
+
+    <!-- Div to display the response message -->
+    <div id="responseMessage"></div>
+
+    <!-- Embed JavaScript directly in the HTML -->
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+
+            const email = document.getElementById('email').value; // Get the email value
+
+            // Make a POST request to the server
+            fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email }) // Send the email as JSON in the request body
+            })
+            .then(response => response.text()) // Parse the response as text
+            .then(data => {
+                // Hide the signup form
+                document.getElementById('signup-form').style.display = 'none';
+
+                // Display the success message in the div with ID responseMessage
+                document.getElementById('responseMessage').textContent = data;
+                document.getElementById('responseMessage').style.color = 'green'; // Success message in green
+                document.getElementById('responseMessage').style.backgroundColor = '#e1f5c4'; // Light green background
+                document.getElementById('responseMessage').style.padding = '20px'; // Add padding for better visibility
+                document.getElementById('responseMessage').style.borderRadius = '5px'; // Add rounded corners
+                document.getElementById('responseMessage').style.textAlign = 'center'; // Center the text
+                document.getElementById('responseMessage').style.fontSize = '18px'; // Make the font bigger
+            })
+            .catch(error => {
+                // Handle errors, display an error message
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error;
+                document.getElementById('responseMessage').style.color = 'red'; // Error message in red
+                document.getElementById('responseMessage').style.backgroundColor = '#f5c6c4'; // Light red background for errors
+                document.getElementById('responseMessage').style.padding = '20px'; // Add padding for better visibility
+                document.getElementById('responseMessage').style.borderRadius = '5px'; // Add rounded corners
+                document.getElementById('responseMessage').style.textAlign = 'center'; // Center the text
+                document.getElementById('responseMessage').style.fontSize = '18px'; // Make the font bigger
+            });
+        });
+    </script>
+</body>
+</html>
